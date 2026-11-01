@@ -303,34 +303,36 @@ function renderCategorySelect() {
 // MOSTRAR PRODUCTOS
 // ==========================================
 
-function renderMenu() {
 
+function renderMenu() {
   const container = $("menuList");
 
   const filtered = products.filter(product =>
-
     String(product.categoria_id) === String(selectedCategory)
-
   );
 
   if (!filtered.length) {
-
     container.innerHTML =
       `<p class="loading-text">No hay productos en esta categoría.</p>`;
-
     return;
-
   }
 
   container.innerHTML = filtered.map((product, index) => `
-
     <article
       class="product-card"
       data-product="${escapeHTML(product.id)}"
       style="animation-delay:${Math.min(index * 45, 350)}ms">
 
-      <div class="product-info">
+      <div class="product-image-wrapper">
+        <img
+          class="product-image"
+          src="${escapeHTML(product.imagen_url || './imagenes/sin-imagen.png')}"
+          alt="${escapeHTML(product.nombre)}"
+          loading="lazy"
+          onerror="this.src='./imagenes/sin-imagen.png'">
+      </div>
 
+      <div class="product-info">
         <h3>${escapeHTML(product.nombre)}</h3>
 
         <span class="product-price">
@@ -344,32 +346,20 @@ function renderMenu() {
         ` : ""}
 
         ${isAdmin ? `
-
           <div class="admin-item-actions product-admin-actions">
-
-            <button
-              type="button"
-              data-edit="${escapeHTML(product.id)}">
+            <button type="button" data-edit="${escapeHTML(product.id)}">
               Editar
             </button>
-
-            <button
-              type="button"
-              data-delete="${escapeHTML(product.id)}">
+            <button type="button" data-delete="${escapeHTML(product.id)}">
               Eliminar
             </button>
-
           </div>
-
         ` : ""}
-
       </div>
-
     </article>
-
   `).join("");
-
 }
+
 
 // ==========================================
 // DETALLE DEL PRODUCTO

@@ -1436,3 +1436,324 @@ h2 {
   }
 
 }
+
+
+/* ==========================================
+   NUEVO DISEÑO PARA MÓVILES
+========================================== */
+
+@media (max-width: 760px) {
+
+  body {
+    overflow-x: hidden;
+  }
+
+  .site-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 13px;
+    padding: 13px 5%;
+    min-height: auto;
+  }
+
+  .brand {
+    font-size: 14px;
+    gap: 9px;
+  }
+
+  .brand-mark {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+  }
+
+  .site-header > .btn {
+    font-size: 12px;
+    padding: 9px 12px;
+    min-height: 38px;
+  }
+
+  .main-nav {
+    grid-column: 1 / -1;
+    order: initial;
+    display: flex;
+    justify-content: flex-start;
+    gap: 25px;
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 5px 0 8px;
+    scrollbar-width: none;
+  }
+
+  .main-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .main-nav a {
+    font-size: 13px;
+    flex: 0 0 auto;
+  }
+
+  /* PORTADA */
+
+  .hero {
+    min-height: auto;
+    padding: 55px 7% 65px;
+    grid-template-columns: 1fr;
+    gap: 35px;
+    text-align: center;
+  }
+
+  .hero-content h1 {
+    font-size: clamp(48px, 11vw, 70px);
+    letter-spacing: -1px;
+  }
+
+  .hero-content p {
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 25px;
+  }
+
+  .hero-content .btn {
+    min-height: 52px;
+    font-size: 15px;
+  }
+
+  .hero-logo-slot {
+    width: min(250px, 72%);
+  }
+
+  .hero-decoration {
+    display: none;
+  }
+
+  /* SECCIONES */
+
+  .section {
+    width: 90%;
+    padding: 48px 0;
+  }
+
+  .section-heading {
+    align-items: center;
+    margin-bottom: 22px;
+  }
+
+  .section-heading h2 {
+    font-size: 36px;
+  }
+
+  .eyebrow {
+    font-size: 10px;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+  }
+
+  /* CATEGORÍAS: CARRUSEL HORIZONTAL */
+
+  .category-wrapper {
+    margin-bottom: 22px;
+    width: 100%;
+  }
+
+  .category-list {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    overflow-y: hidden;
+    gap: 10px;
+    padding: 5px 2px 14px;
+    white-space: nowrap;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .category-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .category-chip {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-height: 43px;
+    padding: 10px 17px;
+    font-size: 13px;
+    border-radius: 30px;
+  }
+
+  /* PRODUCTOS */
+
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 13px;
+  }
+
+  .product-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+    padding: 0;
+    border-radius: 17px;
+    overflow: hidden;
+  }
+
+  .product-image-wrapper {
+    width: 100%;
+    height: 145px;
+    overflow: hidden;
+    background: #24201d;
+  }
+
+  .product-image {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+
+  .product-info {
+    padding: 13px;
+  }
+
+  .product-info h3 {
+    font-size: 14px;
+    line-height: 1.35;
+    margin-bottom: 9px;
+    overflow-wrap: anywhere;
+  }
+
+  .product-price {
+    font-size: 16px;
+  }
+
+  /* RECOMENDACIONES */
+
+  .recommendations-list {
+    gap: 13px;
+    padding-bottom: 15px;
+  }
+
+  .recommendation-card {
+    min-width: 225px;
+    max-width: 225px;
+    border-radius: 17px;
+  }
+
+  .recommendation-card img {
+    height: 155px;
+  }
+
+  .recommendation-card h3 {
+    padding: 14px;
+    font-size: 15px;
+  }
+
+  /* RESEÑAS */
+
+  .reviews-section {
+    padding: 65px 7%;
+  }
+
+  .reviews-content h2 {
+    font-size: 36px;
+  }
+
+  .reviews-content p {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* PANEL ADMINISTRATIVO */
+
+  .admin-panel {
+    width: 94%;
+    padding: 18px;
+    margin: 35px auto;
+  }
+
+  .admin-columns {
+    grid-template-columns: 1fr;
+  }
+
+  /* MODALES */
+
+  .modal {
+    padding: 12px;
+  }
+
+  .modal-card {
+    width: 100%;
+    max-height: 88vh;
+    padding: 27px 19px;
+    border-radius: 20px;
+  }
+
+  /* BIENVENIDA */
+
+  .welcome-card {
+    width: 100%;
+    max-width: 420px;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 40px 22px 25px;
+    max-height: 90dvh;
+    overflow-y: auto;
+    text-align: center;
+  }
+
+  .welcome-mascot {
+    width: 100%;
+    max-width: 165px;
+    max-height: 165px;
+  }
+
+  .welcome-copy h2 {
+    font-size: 32px;
+  }
+
+  .welcome-copy p {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .welcome-actions {
+    justify-content: center;
+  }
+
+  .site-footer {
+    flex-direction: column;
+    text-align: center;
+    padding: 30px 6%;
+  }
+}
+
+/* TELÉFONOS PEQUEÑOS */
+
+@media (max-width: 380px) {
+
+  .menu-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .product-image-wrapper {
+    height: 190px;
+  }
+
+  .product-info {
+    padding: 16px;
+  }
+
+  .product-info h3 {
+    font-size: 16px;
+  }
+
+  .product-price {
+    font-size: 18px;
+  }
+
+}
