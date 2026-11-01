@@ -32,7 +32,8 @@
     </nav>
 
     <button id="adminLoginOpen" class="btn btn-outline btn-small">
-      Administración
+      <span class="admin-login-label-desktop">Administración</span>
+      <span class="admin-login-label-mobile">Iniciar sesión</span>
     </button>
   </header>
 
@@ -46,8 +47,8 @@
         <span class="eyebrow">SABOR QUE SE DISFRUTA</span>
 
         <h1>
-          ¡EL SABOR<br>
-          ESTÁ EN <span>CASA!</span>
+          ¡EL Mejor<br>
+          SABOR <span>ACÁ!</span>
         </h1>
 
         <p>
@@ -280,29 +281,26 @@
 
     <div class="admin-columns">
 
-      <!-- FORMULARIO PRODUCTOS -->
-
       <section class="admin-box">
 
         <h3 id="productFormTitle">Agregar producto</h3>
 
         <form id="productForm">
-
           <input id="productId" type="hidden">
 
-          <label for="productName">Nombre</label>
-          <input id="productName" required maxlength="100">
+          <label for="productName">Nombre del producto</label>
+          <input id="productName" required maxlength="120" placeholder="Ej. Tacos al pastor">
 
           <label for="productPrice">Precio</label>
-          <input id="productPrice" type="number" min="0" step="0.01" required>
+          <input id="productPrice" type="number" min="0" step="0.01" required placeholder="0.00">
 
           <label for="productCategory">Categoría</label>
           <select id="productCategory" required></select>
 
           <label for="productDescription">Descripción</label>
-          <textarea id="productDescription" maxlength="700"></textarea>
+          <textarea id="productDescription" maxlength="700" placeholder="Describe el producto"></textarea>
 
-          <label for="productImage">Imagen</label>
+          <label for="productImage">Imagen del producto</label>
           <input id="productImage" type="file" accept="image/*">
 
           <label class="check-label">
@@ -312,7 +310,7 @@
 
           <label class="check-label">
             <input id="productFeatured" type="checkbox">
-            Destacado
+            Mostrar en recomendaciones
           </label>
 
           <p id="productMsg" class="form-message"></p>
@@ -324,16 +322,37 @@
           <button id="cancelProductEdit" class="btn btn-outline btn-full" type="button" hidden>
             Cancelar edición
           </button>
-
         </form>
 
       </section>
 
-      <!-- PRODUCTOS REGISTRADOS -->
-
       <section class="admin-box">
 
-        <h3>Productos registrados</h3>
+        <div class="admin-subheading">
+
+          <h3>Productos registrados</h3>
+
+          <strong id="adminProductTotal" class="admin-total">
+            Total: 0
+          </strong>
+
+        </div>
+
+        <div class="admin-product-toolbar">
+
+          <label for="adminProductSearch">
+            Buscar productos
+          </label>
+          <input id="adminProductSearch" type="search" placeholder="Nombre o descripción">
+
+          <label for="adminCategoryFilter">
+            Filtrar por categoría
+          </label>
+          <select id="adminCategoryFilter">
+            <option value="all">Todas las categorías</option>
+          </select>
+
+        </div>
 
         <div id="adminProductList" class="admin-list"></div>
 

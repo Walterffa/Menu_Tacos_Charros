@@ -240,11 +240,12 @@ async function loadData() {
 
   }
 
-  renderCategories();
-  renderMenu();
-  renderRecommendations();
-  renderCategorySelect();
-  renderAdminProducts();
+ renderCategories();
+renderMenu();
+renderRecommendations();
+renderCategorySelect();
+renderAdminCategoryFilter();
+renderAdminProducts();
 
 }
 
@@ -289,7 +290,11 @@ function renderCategories() {
 
 function renderCategorySelect() {
 
-  $("productCategory").innerHTML = categories.map(category => `
+  const select = $("productCategory");
+
+  if (!select) return;
+
+  select.innerHTML = categories.map(category => `
 
     <option value="${escapeHTML(category.id)}">
       ${escapeHTML(category.nombre)}
@@ -305,6 +310,7 @@ function renderCategorySelect() {
 
 
 function renderMenu() {
+
   const container = $("menuList");
 
   const filtered = products.filter(product =>
@@ -312,54 +318,36 @@ function renderMenu() {
   );
 
   if (!filtered.length) {
+
     container.innerHTML =
       `<p class="loading-text">No hay productos en esta categoría.</p>`;
+
     return;
+
   }
 
   container.innerHTML = filtered.map((product, index) => `
+
     <article
       class="product-card"
       data-product="${escapeHTML(product.id)}"
       style="animation-delay:${Math.min(index * 45, 350)}ms">
 
-      <div class="product-image-wrapper">
-        <img
-          class="product-image"
-          src="${escapeHTML(product.imagen_url || './imagenes/sin-imagen.png')}"
-          alt="${escapeHTML(product.nombre)}"
-          loading="lazy"
-          onerror="this.src='./imagenes/sin-imagen.png'">
-      </div>
-
       <div class="product-info">
+
         <h3>${escapeHTML(product.nombre)}</h3>
 
         <span class="product-price">
           ${money(product.precio)}
         </span>
 
-        ${product.disponible === false ? `
-          <p class="product-status">
-            No disponible actualmente
-          </p>
-        ` : ""}
-
-        ${isAdmin ? `
-          <div class="admin-item-actions product-admin-actions">
-            <button type="button" data-edit="${escapeHTML(product.id)}">
-              Editar
-            </button>
-            <button type="button" data-delete="${escapeHTML(product.id)}">
-              Eliminar
-            </button>
-          </div>
-        ` : ""}
       </div>
-    </article>
-  `).join("");
-}
 
+    </article>
+
+  `).join("");
+
+}
 
 // ==========================================
 // DETALLE DEL PRODUCTO
@@ -805,7 +793,11 @@ async function refreshAdmin(user) {
     ? await checkAdmin(currentUser)
     : false;
 
+  // Mostrar u ocultar el panel administrativo
   $("adminPanel").hidden = !isAdmin;
+
+  // Ocultar el botón de administración cuando ya inició sesión
+  $("adminLoginOpen").hidden = isAdmin;
 
   renderMenu();
   renderAdminProducts();
@@ -955,9 +947,54 @@ async function recoverPassword() {
 // PRODUCTOS ADMINISTRATIVOS
 // ==========================================
 
+// ==========================================
+// FILTROS DE CATEGORÍAS ADMINISTRATIVAS
+// ==========================================
+
+function renderAdminCategoryFilter() {
+
+  const select = $("adminCategoryFilter");
+
+  if (!select) return;
+
+  const previousValue = select.value || "all";
+
+  select.innerHTML = `
+
+    <option value="all">
+      Todas las categorías
+    </option>
+
+    ${categories.map(category => `
+
+      <option value="${escapeHTML(category.id)}">
+        ${escapeHTML(category.nombre)}
+      </option>
+
+    `).join("")}
+
+  `;
+
+  const categoryExists = categories.some(category =>
+    String(category.id) === String(previousValue)
+  );
+
+  select.value = previousValue === "all" || categoryExists
+    ? previousValue
+    : "all";
+
+}
+
+
+// ==========================================
+// PRODUCTOS ADMINISTRATIVOS
+// ==========================================
+
 function renderAdminProducts() {
 
   const container = $("adminProductList");
+
+  if (!container) return;
 
   if (!isAdmin) {
 
@@ -967,49 +1004,98 @@ function renderAdminProducts() {
 
   }
 
-  if (!products.length) {
+  // Total general de productos registrados
+  $("adminProductTotal").textContent =
+    `Total: ${products.length} productos`;
 
-    container.innerHTML =
-      `<p class="loading-text">No hay productos registrados.</p>`;
+  // Obtener categoría seleccionada
+  const filter = $("adminCategoryFilter").value || "all";
+
+  const search = normalizeCategoryName(
+    $("adminProductSearch")?.value || ""
+  );
+
+  const filteredProducts = products.filter(product => {
+    const category = categories.find(item =>
+      String(item.id) === String(product.categoria_id)
+    );
+    const matchesCategory =
+      filter === "all" ||
+      String(product.categoria_id) === String(filter);
+    const searchableText = normalizeCategoryName([
+      product.nombre,
+      product.descripcion,
+      category?.nombre
+    ].join(" "));
+
+    return matchesCategory && searchableText.includes(search);
+  });
+
+  if (!filteredProducts.length) {
+
+    container.innerHTML = `
+      <p class="loading-text">
+        No se encontraron productos con esos filtros.
+      </p>
+    `;
 
     return;
 
   }
 
-  container.innerHTML = products.map(product => `
+  container.innerHTML = filteredProducts.map(product => {
 
-    <article class="admin-item">
+    const category = categories.find(item =>
+      String(item.id) === String(product.categoria_id)
+    );
 
-      <div class="admin-item-info">
+    return `
 
-        <strong>${escapeHTML(product.nombre)}</strong>
+      <article class="admin-item">
 
-        <small>${money(product.precio)}</small>
+        <div class="admin-item-info">
 
-      </div>
+          <strong>
+            ${escapeHTML(product.nombre)}
+          </strong>
 
-      <div class="admin-item-actions">
+          <small>
+            ${money(product.precio)}
+          </small>
 
-        <button
-          type="button"
-          data-edit="${escapeHTML(product.id)}">
-          Editar
-        </button>
+          <p class="product-status">
+            ${escapeHTML(category?.nombre || "Sin categoría")}
+          </p>
 
-        <button
-          type="button"
-          data-delete="${escapeHTML(product.id)}">
-          Eliminar
-        </button>
+        </div>
 
-      </div>
+        <div class="admin-item-actions">
 
-    </article>
+          <button
+            type="button"
+            data-edit="${escapeHTML(product.id)}">
 
-  `).join("");
+            Editar
+
+          </button>
+
+          <button
+            type="button"
+            data-delete="${escapeHTML(product.id)}">
+
+            Eliminar
+
+          </button>
+
+        </div>
+
+      </article>
+
+    `;
+
+  }).join("");
 
 }
-
 // ==========================================
 // LIMPIAR FORMULARIO
 // ==========================================
@@ -1389,15 +1475,34 @@ $("forgotPassword").addEventListener("click", recoverPassword);
 
 $("logoutAdmin").addEventListener("click", logoutAdmin);
 
-$("productForm").addEventListener("submit", saveProduct);
+const productForm = $("productForm");
 
-$("cancelProductEdit").addEventListener("click", resetProductForm);
+if (productForm) {
+  productForm.addEventListener("submit", saveProduct);
+}
+
+const cancelProductEdit = $("cancelProductEdit");
+
+if (cancelProductEdit) {
+  cancelProductEdit.addEventListener("click", resetProductForm);
+}
 
 $("refreshReviews").addEventListener("click", loadReviews);
 
 // ==========================================
 // EVENTOS: LISTA ADMINISTRATIVA
 // ==========================================
+$("adminCategoryFilter").addEventListener("change", () => {
+
+  renderAdminProducts();
+
+});
+
+$("adminProductSearch").addEventListener("input", () => {
+
+  renderAdminProducts();
+
+});
 
 $("adminProductList").addEventListener("click", event => {
 
@@ -1457,13 +1562,33 @@ $("welcomeX").addEventListener("click", event => {
 
 });
 
-$("welcomeOverlay").addEventListener("click", event => {
+const dismissWelcomeFromOverlay = event => {
 
   if (event.target.closest("button")) return;
 
   closeWelcome();
 
-});
+};
+
+document.addEventListener("pointerdown", event => {
+
+  const overlay = $("welcomeOverlay");
+
+  if (
+    !overlay ||
+    overlay.style.display === "none" ||
+    overlay.classList.contains("closing")
+  ) {
+    return;
+  }
+
+  event.preventDefault();
+  event.stopPropagation();
+  closeWelcome();
+
+}, true);
+
+$("welcomeOverlay").addEventListener("click", dismissWelcomeFromOverlay);
 
 // ==========================================
 // INICIALIZACIÓN
