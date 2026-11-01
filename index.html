@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111111">
+
+  <title>Tacos Charros | Menú</title>
+
+  <link rel="stylesheet" href="styles.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- ENCABEZADO -->
+
+  <header class="site-header">
+    <a class="brand" href="#">
+      <span class="brand-mark">TC</span>
+      <span>TACOS <b>CHARROS</b></span>
+    </a>
+
+    <nav class="main-nav">
+      <a href="#menu">Menú</a>
+      <a href="#recomendaciones">Recomendaciones</a>
+      <a href="#resenas">Reseñas</a>
+    </nav>
+
+    <button id="adminLoginOpen" class="btn btn-outline btn-small">
+      Administración
+    </button>
+  </header>
+
+  <main>
+
+    <!-- PORTADA -->
+
+    <section class="hero">
+
+      <div class="hero-content">
+        <span class="eyebrow">SABOR QUE SE DISFRUTA</span>
+
+        <h1>
+          ¡EL SABOR<br>
+          ESTÁ EN <span>CASA!</span>
+        </h1>
+
+        <p>
+          Descubre nuestro menú y encuentra tu próximo antojo.
+        </p>
+
+        <a href="#menu" class="btn btn-red">
+          Explorar menú <span>›</span>
+        </a>
+      </div>
+
+      <div class="hero-logo-slot">
+        <div class="logo-glow"></div>
+
+        <img
+          class="hero-logo-preview"
+          src="./logo.png"
+          alt="Logo de Tacos Charros"
+        >
+      </div>
+
+      <div class="hero-decoration">
+        HECHO CON SABOR
+      </div>
+
+    </section>
+
+    <!-- RECOMENDACIONES -->
+
+    <section id="recomendaciones" class="section recommendations-section">
+
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">PARA QUE SE TE ANTOJE</span>
+          <h2>RECOMENDACIONES</h2>
+        </div>
+
+        <div class="carousel-controls">
+          <button id="recommendPrev" class="circle-btn" aria-label="Anterior">‹</button>
+          <button id="recommendNext" class="circle-btn" aria-label="Siguiente">›</button>
+        </div>
+      </div>
+
+      <div id="recommendationsList" class="recommendations-list">
+        <p class="loading-text">Cargando recomendaciones...</p>
+      </div>
+
+    </section>
+
+    <!-- MENÚ -->
+
+    <section id="menu" class="section menu-section">
+
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">PREPARADOS PARA TI</span>
+          <h2>NUESTRO MENÚ</h2>
+        </div>
+      </div>
+
+      <div class="category-wrapper">
+        <div id="categoryList" class="category-list"></div>
+      </div>
+
+      <div id="menuList" class="menu-grid">
+        <p class="loading-text">Cargando menú...</p>
+      </div>
+
+    </section>
+
+    <!-- RESEÑAS -->
+
+    <section id="resenas" class="section reviews-section">
+
+      <div class="reviews-content">
+        <span class="eyebrow">TU OPINIÓN CUENTA</span>
+
+        <h2>¿QUÉ TE PARECIÓ?</h2>
+
+        <p>
+          Cuéntanos cómo fue tu experiencia en Tacos Charros.
+        </p>
+
+        <button id="openReview" class="btn btn-red">
+          Dejar una reseña
+        </button>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+
+  <footer class="site-footer">
+
+    <a class="brand" href="#">
+      <span class="brand-mark">TC</span>
+      <span>TACOS <b>CHARROS</b></span>
+    </a>
+
+    <p>Gracias por visitarnos. ¡Vuelve pronto!</p>
+
+  </footer>
+
+  <!-- DETALLE DEL PRODUCTO -->
+
+  <div id="detailModal" class="modal" aria-hidden="true">
+
+    <div class="modal-backdrop" data-close="detail"></div>
+
+    <section class="modal-card detail-card" role="dialog" aria-modal="true">
+
+      <button class="modal-close" data-close="detail" aria-label="Cerrar">×</button>
+
+      <img id="detailImage" class="detail-image" src="" alt="">
+
+      <div class="detail-content">
+        <span class="eyebrow">TACOS CHARROS</span>
+
+        <h2 id="detailName"></h2>
+
+        <p id="detailDescription"></p>
+
+        <strong id="detailPrice" class="detail-price"></strong>
+      </div>
+
+    </section>
+  </div>
+
+  <!-- MODAL DE RESEÑAS -->
+
+  <div id="reviewModal" class="modal" aria-hidden="true">
+
+    <div class="modal-backdrop" data-close="review"></div>
+
+    <section class="modal-card form-card" role="dialog" aria-modal="true">
+
+      <button class="modal-close" data-close="review" aria-label="Cerrar">×</button>
+
+      <span class="eyebrow">TU EXPERIENCIA</span>
+
+      <h2>DEJA TU RESEÑA</h2>
+
+      <form id="reviewForm">
+
+        <label for="reviewName">Tu nombre</label>
+        <input id="reviewName" maxlength="60" required placeholder="¿Cómo te llamas?">
+
+        <label for="reviewRating">Calificación</label>
+
+        <select id="reviewRating" required>
+          <option value="5">★★★★★ - Excelente</option>
+          <option value="4">★★★★ - Muy bueno</option>
+          <option value="3">★★★ - Bueno</option>
+          <option value="2">★★ - Regular</option>
+          <option value="1">★ - Puede mejorar</option>
+        </select>
+
+        <label for="reviewComment">Comentario</label>
+
+        <textarea id="reviewComment" maxlength="700" required placeholder="Cuéntanos tu experiencia..."></textarea>
+
+        <p id="reviewMsg" class="form-message"></p>
+
+        <button class="btn btn-red btn-full" type="submit">
+          Enviar reseña
+        </button>
+
+      </form>
+
+    </section>
+  </div>
+
+  <!-- LOGIN ADMINISTRADOR -->
+
+  <div id="loginModal" class="modal" aria-hidden="true">
+
+    <div class="modal-backdrop" data-close="login"></div>
+
+    <section class="modal-card form-card" role="dialog" aria-modal="true">
+
+      <button class="modal-close" data-close="login" aria-label="Cerrar">×</button>
+
+      <span class="eyebrow">ACCESO RESTRINGIDO</span>
+
+      <h2>ADMINISTRACIÓN</h2>
+
+      <form id="loginForm">
+
+        <label for="loginEmail">Correo electrónico</label>
+
+        <input id="loginEmail" type="email" required autocomplete="username">
+
+        <label for="loginPassword">Contraseña</label>
+
+        <input id="loginPassword" type="password" required autocomplete="current-password">
+
+        <p id="loginMsg" class="form-message"></p>
+
+        <button class="btn btn-red btn-full" type="submit">
+          Iniciar sesión
+        </button>
+
+        <button id="forgotPassword" class="text-button" type="button">
+          ¿Olvidaste tu contraseña?
+        </button>
+
+      </form>
+
+    </section>
+  </div>
+
+  <!-- PANEL ADMINISTRADOR -->
+
+  <section id="adminPanel" class="admin-panel" hidden>
+
+    <div class="admin-heading">
+
+      <div>
+        <span class="eyebrow">PANEL PRIVADO</span>
+        <h2>ADMINISTRACIÓN</h2>
+      </div>
+
+      <button id="logoutAdmin" class="btn btn-outline btn-small">
+        Cerrar sesión
+      </button>
+
+    </div>
+
+    <div class="admin-columns">
+
+      <!-- FORMULARIO PRODUCTOS -->
+
+      <section class="admin-box">
+
+        <h3 id="productFormTitle">Agregar producto</h3>
+
+        <form id="productForm">
+
+          <input id="productId" type="hidden">
+
+          <label for="productName">Nombre</label>
+          <input id="productName" required maxlength="100">
+
+          <label for="productPrice">Precio</label>
+          <input id="productPrice" type="number" min="0" step="0.01" required>
+
+          <label for="productCategory">Categoría</label>
+          <select id="productCategory" required></select>
+
+          <label for="productDescription">Descripción</label>
+          <textarea id="productDescription" maxlength="700"></textarea>
+
+          <label for="productImage">Imagen</label>
+          <input id="productImage" type="file" accept="image/*">
+
+          <label class="check-label">
+            <input id="productAvailable" type="checkbox" checked>
+            Disponible
+          </label>
+
+          <label class="check-label">
+            <input id="productFeatured" type="checkbox">
+            Destacado
+          </label>
+
+          <p id="productMsg" class="form-message"></p>
+
+          <button class="btn btn-red btn-full" type="submit">
+            Guardar producto
+          </button>
+
+          <button id="cancelProductEdit" class="btn btn-outline btn-full" type="button" hidden>
+            Cancelar edición
+          </button>
+
+        </form>
+
+      </section>
+
+      <!-- PRODUCTOS REGISTRADOS -->
+
+      <section class="admin-box">
+
+        <h3>Productos registrados</h3>
+
+        <div id="adminProductList" class="admin-list"></div>
+
+      </section>
+
+    </div>
+
+    <!-- RESEÑAS ADMINISTRATIVAS -->
+
+    <section class="admin-box admin-reviews">
+
+      <div class="admin-subheading">
+
+        <h3>Reseñas recibidas</h3>
+
+        <button id="refreshReviews" class="btn btn-outline btn-small">
+          Actualizar
+        </button>
+
+      </div>
+
+      <div id="adminReviewList" class="admin-list"></div>
+
+    </section>
+
+  </section>
+
+  <!-- BIENVENIDA DE LA MASCOTA -->
+
+  <div id="welcomeOverlay" class="welcome-overlay" aria-modal="true" role="dialog">
+
+    <div class="welcome-shade"></div>
+
+    <section class="welcome-card">
+
+      <button id="welcomeX" class="welcome-close" aria-label="Cerrar">
+        ×
+      </button>
+
+      <div class="welcome-decoration"></div>
+
+      <img
+        id="welcomeMascot"
+        class="welcome-mascot"
+        src="./mascota.png"
+        alt="Mascota de Tacos Charros"
+      >
+
+      <div class="welcome-copy">
+
+        <span class="guide-pill">BIENVENIDO</span>
+
+        <h2>
+          ¡Bienvenido a <span>Tacos Charros!</span>
+        </h2>
+
+        <p>
+          Soy tu guía en esta visita. Explora nuestro menú, descubre nuestras recomendaciones y encuentra algo delicioso para disfrutar.
+        </p>
+
+        <div class="welcome-actions">
+
+          <button id="guideNext" class="btn btn-red">
+            Comenzar <span>›</span>
+          </button>
+
+        </div>
+
+        <small class="tap-hint">
+          Toca la pantalla para continuar
+        </small>
+
+      </div>
+
+    </section>
+
+  </div>
+
+  <!-- NOTIFICACIONES -->
+
+  <div id="toast" class="toast" role="status"></div>
+
+  <!-- SCRIPTS -->
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="app.js"></script>
+
+</body>
+</html>
